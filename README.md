@@ -33,6 +33,9 @@ https://miro.com/welcomeonboard/N29aSE0wdncrd1o5b1NqWWVVUzFxS21NVDk5dFk1UUhUSHN5
 ## **Slack Workspace**
 https://join.slack.com/t/thesentienthome/shared_invite/zt-40exntktt-K~aAvLRM2srkyQjPEPg2Hg
 
+## **Notion Workspace**
+https://www.notion.so/invite/804b7e201762a51d6f8377d7efe39fd475805531
+
 *[Sketch your technical architecture or data flow to help understand your technical approach. You can edit the mermaid chart below:]*
 
 ```mermaid
