@@ -14,7 +14,7 @@
 | :--- | :--- | :--- |
 | Firstname Lastname | [@username](https://github.com/username) | e.g., Backend, Frontend, UX, Pitcher |
 | | | |
-| | | |
+| Sebastian Tiesmeyer | @sebastiantiesmeyer(https://github.com/sebastiantiesmeyer) | ML engineer |
 | | | |
 
 ## **Challenge**
