@@ -30,6 +30,9 @@
 ## **Miro Board**
 https://miro.com/welcomeonboard/N29aSE0wdncrd1o5b1NqWWVVUzFxS21NVDk5dFk1UUhUSHN5N3ZsR0xPUkQvVTZ3V1FKS3VjcDZ3aC9mUWxTMzBDcGt2dm9PVmlTdTdrN1JjSHphMW91UzRTY0pYQWpmWGxlMjc1cmhiWUtoUVQ0amY4dU94UmJ3c2hnOStCcytNakdSWkpBejJWRjJhRnhhb1UwcS9BPT0hdjE=?share_link_id=330566916038
 
+## **Slack Workspace**
+https://join.slack.com/t/thesentienthome/shared_invite/zt-40exntktt-K~aAvLRM2srkyQjPEPg2Hg
+
 *[Sketch your technical architecture or data flow to help understand your technical approach. You can edit the mermaid chart below:]*
 
 ```mermaid
