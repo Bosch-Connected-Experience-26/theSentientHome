@@ -42,7 +42,10 @@ https://www.notion.so/invite/804b7e201762a51d6f8377d7efe39fd475805531
 
 *[Sketch your technical architecture or data flow to help understand your technical approach. You can edit the mermaid chart below:]*
 
-```mermaid
+```ChatGPT Plus
+
+
+mermaid
 graph LR;
     subgraph Edge / Hardware
         Sensor[IoT Sensor / Device] -->|MQTT| Gateway[Edge Gateway]
@@ -60,3 +63,35 @@ graph LR;
     subgraph Client / UI
         API -->|REST | App[Web / Mobile Dashboard]
     end
+
+
+-> Please change this graph so:
+- MongoDB is connected to Agentcore and Web/Mobile UI
+- Agentcore is connected to mongodb, external sources and Web/mobile
+- There's a backwards connection from assistedhome to Edge gateway, where the system steers Edge hardware.
+
+
+graph LR;
+    subgraph Edge / Hardware
+        Sensor[IoT Sensor / Device] -->|MQTT| Gateway[Edge Gateway]
+    end
+    
+    subgraph Cloud / Backend
+        Gateway -->|Data Ingestion| API[AssistedHome; AWS API Gateway]
+        API -->|Device Commands / Steering| Gateway
+
+        API <--> DB[(MongoDB)]
+        API <--> ML[AWS Agentcore LLM]
+        API <--> ext[External Information; Weather, Energy Prices]
+
+        DB <--> ML
+        DB <--> App[Web / Mobile Dashboard]
+        ML <--> ext
+        ML <--> App
+    end
+    
+    subgraph Client / UI
+        API -->|REST| App
+    end
+
+
