@@ -57,5 +57,5 @@ graph LR;
 
     
     subgraph Client / UI
-        API -->|REST / GraphQL| App[Web / Mobile Dashboard]
+        API -->|REST | App[Web / Mobile Dashboard]
     end
