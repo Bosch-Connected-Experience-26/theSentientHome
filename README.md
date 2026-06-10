@@ -12,11 +12,13 @@
 
 | Name | GitHub Handle | Role(s) |
 | :--- | :--- | :--- |
-| Firstname Lastname | [@username](https://github.com/username) | e.g., Backend, Frontend, UX, Pitcher |
+| Mariebelle Khaddage | [@mariebelle88](https://github.com/MarieBelle88) | Frontend, UX, Pitcher |
 | | | |
 | Sebastian Tiesmeyer | @sebastiantiesmeyer(https://github.com/sebastiantiesmeyer) | ML engineer |
 | | | |
 |Arpad Dusa | @dusarp (https://github.com/dusarp) | Data scientist |
+| | | |
+|Charlotte Selter | @charlotteselter-hub (https://github.com/charlotteselter-hub) | Product Manager |
 | | | |
 
 ## **Challenge**
