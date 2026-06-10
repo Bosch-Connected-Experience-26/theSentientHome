@@ -1,0 +1,9 @@
+# Local development, deployment, and helper scripts.
+-r requirements.txt
+
+bedrock-agentcore-starter-toolkit
+langchain-aws>=0.1.0
+langchain-core>=0.2.0
+python-dotenv>=1.0.0
+streamlit>=1.28.0
+strands-agents-tools

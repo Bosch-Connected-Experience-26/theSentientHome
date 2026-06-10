@@ -1,0 +1,9 @@
+# Runtime dependencies for agent.py on Bedrock AgentCore.
+boto3>=1.34.0
+botocore>=1.34.0
+certifi>=2024.0.0
+dnspython>=2.6.0
+pymongo>=4.6.0
+requests>=2.31.0
+strands-agents
+bedrock-agentcore
