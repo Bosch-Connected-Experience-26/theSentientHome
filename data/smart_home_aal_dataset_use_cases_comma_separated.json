@@ -1,0 +1,1378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Smart Home Hackathon Ambient Assisted Living Dataset",
+  "target_resident": "Erna",
+  "generation_timestamp": "2026-06-09T16:25:00Z",
+  "use_cases": [
+    {
+      "use_case": "users",
+      "records": [
+        {
+          "user_id": "user_erna_001",
+          "name": "Erna Hoffmann",
+          "age": "34",
+          "city": "Berlin",
+          "occupation": "Project Coordinator",
+          "household_type": "single_parent",
+          "autonomy_mode": "assisted",
+          "timezone": "Europe/Berlin",
+          "status": "active",
+          "created_at": "2026-06-01"
+        }
+      ]
+    },
+    {
+      "use_case": "household_members",
+      "records": [
+        {
+          "member_id": "member_erna",
+          "user_id": "user_erna_001",
+          "name": "Erna",
+          "type": "adult_parent",
+          "age": "34",
+          "relationship": "primary_user",
+          "has_app_access": "true",
+          "data_scope": "full",
+          "privacy_note": "No judgmental parenting language; no automatic child routine changes"
+        },
+        {
+          "member_id": "member_lina",
+          "user_id": "user_erna_001",
+          "name": "Lina",
+          "type": "child",
+          "age": "9",
+          "relationship": "daughter",
+          "has_app_access": "false",
+          "data_scope": "protected",
+          "privacy_note": "Use only routine labels, no personal profiling"
+        },
+        {
+          "member_id": "member_adam",
+          "user_id": "user_erna_001",
+          "name": "Adam",
+          "type": "child",
+          "age": "6",
+          "relationship": "son",
+          "has_app_access": "false",
+          "data_scope": "protected",
+          "privacy_note": "Use only routine labels, no personal profiling"
+        }
+      ]
+    },
+    {
+      "use_case": "rooms",
+      "records": [
+        {
+          "room_id": "room_kitchen",
+          "room_name": "Kitchen",
+          "primary_use": "cooking_food",
+          "min_temp_c": "19.5",
+          "preferred_temp_c": "22",
+          "has_heating": "true",
+          "heating_zone_id": "heating_zone_kitchen",
+          "window_sensor_id": "window_kitchen_01",
+          "motion_sensor_id": "motion_kitchen_01",
+          "air_sensor_id": "co2_kitchen_01"
+        },
+        {
+          "room_id": "room_living",
+          "room_name": "Living Room",
+          "primary_use": "family_homework",
+          "min_temp_c": "20",
+          "preferred_temp_c": "21",
+          "has_heating": "true",
+          "heating_zone_id": "heating_zone_living",
+          "window_sensor_id": "window_living_01",
+          "motion_sensor_id": "motion_living_01",
+          "air_sensor_id": "co2_living_01"
+        },
+        {
+          "room_id": "room_office",
+          "room_name": "Home Office",
+          "primary_use": "work_meetings",
+          "min_temp_c": "21",
+          "preferred_temp_c": "22",
+          "has_heating": "true",
+          "heating_zone_id": "heating_zone_office",
+          "window_sensor_id": "window_office_01",
+          "motion_sensor_id": "motion_office_01",
+          "air_sensor_id": "co2_office_01"
+        },
+        {
+          "room_id": "room_kids_bed",
+          "room_name": "Kids Bedroom",
+          "primary_use": "sleep",
+          "min_temp_c": "19",
+          "preferred_temp_c": "20",
+          "has_heating": "true",
+          "heating_zone_id": "heating_zone_kids",
+          "window_sensor_id": "window_kids_01",
+          "motion_sensor_id": "motion_kids_01",
+          "air_sensor_id": "co2_kids_01"
+        },
+        {
+          "room_id": "room_bath",
+          "room_name": "Bathroom",
+          "primary_use": "hygiene",
+          "min_temp_c": "20",
+          "preferred_temp_c": "22",
+          "has_heating": "true",
+          "heating_zone_id": "heating_zone_bath",
+          "window_sensor_id": "window_bath_01",
+          "motion_sensor_id": "motion_bath_01",
+          "air_sensor_id": "humidity_bath_01"
+        }
+      ]
+    },
+    {
+      "use_case": "appliances",
+      "records": [
+        {
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Eco 50",
+          "typical_kwh": "0.95",
+          "typical_water_l": "9.5",
+          "risk_level": "medium",
+          "automation_policy": "delay_allowed",
+          "notes": "silent_after_finish"
+        },
+        {
+          "appliance_id": "appl_wm_001",
+          "appliance_type": "Washing Machine",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Bathroom",
+          "connection_status": "connected",
+          "default_program": "Cotton 40",
+          "typical_kwh": "0.75",
+          "typical_water_l": "48",
+          "risk_level": "medium",
+          "automation_policy": "reminder_after_finish",
+          "notes": "silent_during_meetings"
+        },
+        {
+          "appliance_id": "appl_dryer_001",
+          "appliance_type": "Dryer",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Bathroom",
+          "connection_status": "connected",
+          "default_program": "Cupboard Dry",
+          "typical_kwh": "2.10",
+          "typical_water_l": "0",
+          "risk_level": "high",
+          "automation_policy": "avoid_peak_hours",
+          "notes": "ask_before_run_peak"
+        },
+        {
+          "appliance_id": "appl_oven_001",
+          "appliance_type": "Oven",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Preheat 180C",
+          "typical_kwh": "1.40",
+          "typical_water_l": "0",
+          "risk_level": "safety_critical",
+          "automation_policy": "monitor_only",
+          "notes": "ask_before_turn_off"
+        },
+        {
+          "appliance_id": "appl_fridge_001",
+          "appliance_type": "Fridge",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Eco Cooling",
+          "typical_kwh": "0.12",
+          "typical_water_l": "0",
+          "risk_level": "low",
+          "automation_policy": "automatic_alerts",
+          "notes": "door_left_open_alert"
+        },
+        {
+          "appliance_id": "appl_coffee_001",
+          "appliance_type": "Coffee Machine",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Morning Coffee",
+          "typical_kwh": "0.08",
+          "typical_water_l": "0",
+          "risk_level": "low",
+          "automation_policy": "automatic_if_approved",
+          "notes": "morning_routine"
+        },
+        {
+          "appliance_id": "appl_hob_001",
+          "appliance_type": "Hob",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Manual Cooking",
+          "typical_kwh": "1.80",
+          "typical_water_l": "0",
+          "risk_level": "safety_critical",
+          "automation_policy": "monitor_only",
+          "notes": "ask_before_intervention"
+        },
+        {
+          "appliance_id": "appl_hood_001",
+          "appliance_type": "Hood",
+          "ecosystem": "Bosch Home Connect",
+          "room": "Kitchen",
+          "connection_status": "connected",
+          "default_program": "Auto Ventilation",
+          "typical_kwh": "0.20",
+          "typical_water_l": "0",
+          "risk_level": "low",
+          "automation_policy": "automatic",
+          "notes": "turn_on_when_cooking_air_quality_drops"
+        }
+      ]
+    },
+    {
+      "use_case": "user_preferences",
+      "records": [
+        {
+          "preference_id": "pref_budget_electricity",
+          "user_id": "user_erna_001",
+          "category": "budget",
+          "key": "electricity_monthly_eur",
+          "value": "90",
+          "control_rule": "hard_limit_false",
+          "scope": "notify_at_70_percent",
+          "sensitivity": "money_sensitive"
+        },
+        {
+          "preference_id": "pref_budget_heating",
+          "user_id": "user_erna_001",
+          "category": "budget",
+          "key": "heating_monthly_eur",
+          "value": "120",
+          "control_rule": "hard_limit_false",
+          "scope": "notify_at_70_percent",
+          "sensitivity": "money_sensitive"
+        },
+        {
+          "preference_id": "pref_work_focus",
+          "user_id": "user_erna_001",
+          "category": "work",
+          "key": "meeting_mode",
+          "value": "enabled",
+          "control_rule": "automatic",
+          "scope": "silence_non_urgent_alerts",
+          "sensitivity": "low_risk"
+        },
+        {
+          "preference_id": "pref_living_temp",
+          "user_id": "user_erna_001",
+          "category": "comfort",
+          "key": "living_room_temp_c",
+          "value": "21",
+          "control_rule": "suggest_before_change",
+          "scope": "family_area",
+          "sensitivity": "comfort_sensitive"
+        },
+        {
+          "preference_id": "pref_kids_temp",
+          "user_id": "user_erna_001",
+          "category": "comfort",
+          "key": "kids_bedroom_temp_c",
+          "value": "20",
+          "control_rule": "suggest_before_change",
+          "scope": "child_area",
+          "sensitivity": "child_sensitive"
+        },
+        {
+          "preference_id": "pref_office_temp",
+          "user_id": "user_erna_001",
+          "category": "comfort",
+          "key": "home_office_temp_c",
+          "value": "22",
+          "control_rule": "automatic_small_adjustments",
+          "scope": "work_area",
+          "sensitivity": "low_risk"
+        },
+        {
+          "preference_id": "pref_privacy",
+          "user_id": "user_erna_001",
+          "category": "privacy",
+          "key": "share_home_data",
+          "value": "false",
+          "control_rule": "must_ask",
+          "scope": "external_sharing",
+          "sensitivity": "privacy_sensitive"
+        },
+        {
+          "preference_id": "pref_parenting",
+          "user_id": "user_erna_001",
+          "category": "language",
+          "key": "avoid_judgmental_parenting",
+          "value": "true",
+          "control_rule": "always",
+          "scope": "content_policy",
+          "sensitivity": "trust_sensitive"
+        }
+      ]
+    },
+    {
+      "use_case": "energy_tariffs",
+      "records": [
+        {
+          "tariff_id": "tariff_00",
+          "timestamp": "2026-06-09T00:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 265,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_01",
+          "timestamp": "2026-06-09T01:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 248,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_02",
+          "timestamp": "2026-06-09T02:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 245,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_03",
+          "timestamp": "2026-06-09T03:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 268,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_04",
+          "timestamp": "2026-06-09T04:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 253,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_05",
+          "timestamp": "2026-06-09T05:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 252,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_06",
+          "timestamp": "2026-06-09T06:00:00",
+          "price_band": "medium",
+          "eur_per_kwh": 0.34,
+          "carbon_g_per_kwh": 272,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_07",
+          "timestamp": "2026-06-09T07:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 309,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_08",
+          "timestamp": "2026-06-09T08:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 328,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_09",
+          "timestamp": "2026-06-09T09:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 308,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_10",
+          "timestamp": "2026-06-09T10:00:00",
+          "price_band": "medium",
+          "eur_per_kwh": 0.34,
+          "carbon_g_per_kwh": 286,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_11",
+          "timestamp": "2026-06-09T11:00:00",
+          "price_band": "medium",
+          "eur_per_kwh": 0.34,
+          "carbon_g_per_kwh": 288,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_12",
+          "timestamp": "2026-06-09T12:00:00",
+          "price_band": "medium",
+          "eur_per_kwh": 0.34,
+          "carbon_g_per_kwh": 293,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_13",
+          "timestamp": "2026-06-09T13:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 262,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_14",
+          "timestamp": "2026-06-09T14:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 247,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_15",
+          "timestamp": "2026-06-09T15:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 263,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_16",
+          "timestamp": "2026-06-09T16:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 318,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_17",
+          "timestamp": "2026-06-09T17:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 306,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_18",
+          "timestamp": "2026-06-09T18:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 305,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_19",
+          "timestamp": "2026-06-09T19:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 307,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_20",
+          "timestamp": "2026-06-09T20:00:00",
+          "price_band": "peak",
+          "eur_per_kwh": 0.42,
+          "carbon_g_per_kwh": 311,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_21",
+          "timestamp": "2026-06-09T21:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 252,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_22",
+          "timestamp": "2026-06-09T22:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 261,
+          "source": "dynamic_tariff_simulated"
+        },
+        {
+          "tariff_id": "tariff_23",
+          "timestamp": "2026-06-09T23:00:00",
+          "price_band": "low",
+          "eur_per_kwh": 0.27,
+          "carbon_g_per_kwh": 264,
+          "source": "dynamic_tariff_simulated"
+        }
+      ]
+    },
+    {
+      "use_case": "calendar_events",
+      "records": [
+        {
+          "calendar_id": "cal_001",
+          "user_id": "user_erna_001",
+          "start_time": "2026-06-09T08:30:00+02:00",
+          "end_time": "2026-06-09T09:30:00+02:00",
+          "title": "Client sync",
+          "event_type": "work",
+          "location": "home_office",
+          "availability": "busy",
+          "home_behavior_rule": "mute_non_urgent"
+        },
+        {
+          "calendar_id": "cal_002",
+          "user_id": "user_erna_001",
+          "start_time": "2026-06-09T10:00:00+02:00",
+          "end_time": "2026-06-09T11:00:00+02:00",
+          "title": "Internal planning",
+          "event_type": "work",
+          "location": "home_office",
+          "availability": "busy",
+          "home_behavior_rule": "mute_non_urgent"
+        },
+        {
+          "calendar_id": "cal_003",
+          "user_id": "user_erna_001",
+          "start_time": "2026-06-09T12:45:00+02:00",
+          "end_time": "2026-06-09T13:15:00+02:00",
+          "title": "Quick status call",
+          "event_type": "work",
+          "location": "home_office",
+          "availability": "busy",
+          "home_behavior_rule": "mute_non_urgent"
+        },
+        {
+          "calendar_id": "cal_004",
+          "user_id": "user_erna_001",
+          "start_time": "2026-06-09T15:30:00+02:00",
+          "end_time": "2026-06-09T16:30:00+02:00",
+          "title": "Video meeting",
+          "event_type": "work",
+          "location": "home_office",
+          "availability": "busy",
+          "home_behavior_rule": "critical_demo_context"
+        },
+        {
+          "calendar_id": "cal_005",
+          "user_id": "user_erna_001",
+          "start_time": "2026-06-09T19:45:00+02:00",
+          "end_time": "2026-06-09T20:15:00+02:00",
+          "title": "Kids bedtime routine",
+          "event_type": "family",
+          "location": "kids_bedroom",
+          "availability": "routine",
+          "home_behavior_rule": "ask_before_start"
+        }
+      ]
+    },
+    {
+      "use_case": "school_routines",
+      "records": [
+        {
+          "routine_id": "routine_school_depart",
+          "household_member": "Lina, Adam",
+          "days": "weekday",
+          "time": "07:50",
+          "routine_type": "leave_home",
+          "location": "front_door_hallway",
+          "risk_level": "low",
+          "system_boundary": "do_not_auto_message_kids"
+        },
+        {
+          "routine_id": "routine_after_school",
+          "household_member": "Lina, Adam",
+          "days": "weekday",
+          "time": "15:20",
+          "routine_type": "arrive_home",
+          "location": "front_door_living_room",
+          "risk_level": "medium",
+          "system_boundary": "notify_parent_only"
+        },
+        {
+          "routine_id": "routine_homework",
+          "household_member": "Lina",
+          "days": "weekday",
+          "time": "16:00",
+          "routine_type": "homework",
+          "location": "living_room",
+          "risk_level": "low",
+          "system_boundary": "suggest_environment_only"
+        },
+        {
+          "routine_id": "routine_bedtime",
+          "household_member": "Lina, Adam",
+          "days": "school_night",
+          "time": "20:00",
+          "routine_type": "bedtime_prep",
+          "location": "kids_bedroom",
+          "risk_level": "medium",
+          "system_boundary": "ask_parent_before_start"
+        }
+      ]
+    },
+    {
+      "use_case": "sensor_readings",
+      "records": [
+        {
+          "reading_id": "sens_001",
+          "timestamp": "2026-06-09T07:00:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 19.0,
+          "humidity_percent": 48,
+          "co2_ppm": 720,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "morning_cold_kitchen"
+        },
+        {
+          "reading_id": "sens_002",
+          "timestamp": "2026-06-09T07:35:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 20.0,
+          "humidity_percent": 50,
+          "co2_ppm": 830,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "breakfast_activity"
+        },
+        {
+          "reading_id": "sens_003",
+          "timestamp": "2026-06-09T08:25:00+02:00",
+          "room_id": "room_office",
+          "temperature_c": 21.8,
+          "humidity_percent": 44,
+          "co2_ppm": 650,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": true,
+          "kids_home": false,
+          "context_label": "meeting_start"
+        },
+        {
+          "reading_id": "sens_004",
+          "timestamp": "2026-06-09T09:10:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 20.5,
+          "humidity_percent": 46,
+          "co2_ppm": 700,
+          "occupancy_detected": false,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "dishwasher_decision"
+        },
+        {
+          "reading_id": "sens_005",
+          "timestamp": "2026-06-09T12:15:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 20.7,
+          "humidity_percent": 49,
+          "co2_ppm": 760,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "lunch_break"
+        },
+        {
+          "reading_id": "sens_006",
+          "timestamp": "2026-06-09T15:20:00+02:00",
+          "room_id": "room_living",
+          "temperature_c": 19.0,
+          "humidity_percent": 47,
+          "co2_ppm": 690,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "kids_home_cold_living_room"
+        },
+        {
+          "reading_id": "sens_007",
+          "timestamp": "2026-06-09T15:45:00+02:00",
+          "room_id": "room_office",
+          "temperature_c": 22.0,
+          "humidity_percent": 43,
+          "co2_ppm": 710,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": true,
+          "kids_home": false,
+          "context_label": "laundry_finished_during_meeting"
+        },
+        {
+          "reading_id": "sens_008",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 20.2,
+          "humidity_percent": 53,
+          "co2_ppm": 880,
+          "occupancy_detected": false,
+          "window_open": true,
+          "meeting_active": false,
+          "kids_home": true,
+          "context_label": "main_demo_window_open_heating_on"
+        },
+        {
+          "reading_id": "sens_009",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "room_id": "room_living",
+          "temperature_c": 20.8,
+          "humidity_percent": 48,
+          "co2_ppm": 760,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": true,
+          "context_label": "kids_in_living_room"
+        },
+        {
+          "reading_id": "sens_010",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "room_id": "room_office",
+          "temperature_c": 22.1,
+          "humidity_percent": 42,
+          "co2_ppm": 705,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": true,
+          "kids_home": false,
+          "context_label": "erna_in_video_meeting"
+        },
+        {
+          "reading_id": "sens_011",
+          "timestamp": "2026-06-09T17:30:00+02:00",
+          "room_id": "room_kitchen",
+          "temperature_c": 22.6,
+          "humidity_percent": 60,
+          "co2_ppm": 1050,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "dinner_cooking_air_quality_rising"
+        },
+        {
+          "reading_id": "sens_012",
+          "timestamp": "2026-06-09T19:45:00+02:00",
+          "room_id": "room_living",
+          "temperature_c": 21.3,
+          "humidity_percent": 46,
+          "co2_ppm": 690,
+          "occupancy_detected": true,
+          "window_open": false,
+          "meeting_active": false,
+          "kids_home": true,
+          "context_label": "bedtime_soon_lights_bright"
+        },
+        {
+          "reading_id": "sens_013",
+          "timestamp": "2026-06-09T21:30:00+02:00",
+          "room_id": "room_bath",
+          "temperature_c": 21.0,
+          "humidity_percent": 63,
+          "co2_ppm": 640,
+          "occupancy_detected": false,
+          "window_open": true,
+          "meeting_active": false,
+          "kids_home": false,
+          "context_label": "bathroom_window_open_near_heating"
+        }
+      ]
+    },
+    {
+      "use_case": "appliance_events",
+      "records": [
+        {
+          "event_id": "evt_001",
+          "timestamp": "2026-06-09T06:45:00+02:00",
+          "appliance_id": "appl_coffee_001",
+          "appliance_type": "Coffee Machine",
+          "state": "completed",
+          "program": "Morning Coffee",
+          "kwh_estimate": "0.08",
+          "water_l_estimate": "0",
+          "price_band": "none",
+          "action_policy": "automatic",
+          "event_note": "Morning routine coffee completed"
+        },
+        {
+          "event_id": "evt_002",
+          "timestamp": "2026-06-09T07:05:00+02:00",
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "state": "completed",
+          "program": "Eco 50",
+          "kwh_estimate": "0.95",
+          "water_l_estimate": "9.5",
+          "price_band": "none",
+          "action_policy": "automatic",
+          "event_note": "Overnight dishwasher finished"
+        },
+        {
+          "event_id": "evt_003",
+          "timestamp": "2026-06-09T08:30:00+02:00",
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "state": "scheduled",
+          "program": "Eco 50",
+          "kwh_estimate": "0.95",
+          "water_l_estimate": "9.5",
+          "price_band": "medium",
+          "action_policy": "suggest_delay",
+          "event_note": "Dishwasher ready but not urgent"
+        },
+        {
+          "event_id": "evt_004",
+          "timestamp": "2026-06-09T09:10:00+02:00",
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "state": "delayed",
+          "program": "Eco 50",
+          "kwh_estimate": "0.00",
+          "water_l_estimate": "0",
+          "price_band": "medium_high",
+          "action_policy": "user_approved",
+          "event_note": "Delayed to 13:15 to reduce cost"
+        },
+        {
+          "event_id": "evt_005",
+          "timestamp": "2026-06-09T12:18:00+02:00",
+          "appliance_id": "appl_hob_001",
+          "appliance_type": "Hob",
+          "state": "started",
+          "program": "Manual Cooking",
+          "kwh_estimate": "0.35",
+          "water_l_estimate": "0",
+          "price_band": "none",
+          "action_policy": "monitor",
+          "event_note": "Lunch cooking started"
+        },
+        {
+          "event_id": "evt_006",
+          "timestamp": "2026-06-09T12:20:00+02:00",
+          "appliance_id": "appl_hood_001",
+          "appliance_type": "Hood",
+          "state": "started",
+          "program": "Auto Ventilation",
+          "kwh_estimate": "0.05",
+          "water_l_estimate": "0",
+          "price_band": "none",
+          "action_policy": "automatic",
+          "event_note": "Hood started due to cooking air quality"
+        },
+        {
+          "event_id": "evt_007",
+          "timestamp": "2026-06-09T13:15:00+02:00",
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "state": "started",
+          "program": "Eco 50",
+          "kwh_estimate": "0.95",
+          "water_l_estimate": "9.5",
+          "price_band": "low",
+          "action_policy": "approved_prior",
+          "event_note": "Started during cheaper tariff"
+        },
+        {
+          "event_id": "evt_008",
+          "timestamp": "2026-06-09T14:55:00+02:00",
+          "appliance_id": "appl_wm_001",
+          "appliance_type": "Washing Machine",
+          "state": "started",
+          "program": "Cotton 40",
+          "kwh_estimate": "0.75",
+          "water_l_estimate": "48",
+          "price_band": "medium",
+          "action_policy": "user_started",
+          "event_note": "Laundry cycle started"
+        },
+        {
+          "event_id": "evt_009",
+          "timestamp": "2026-06-09T15:45:00+02:00",
+          "appliance_id": "appl_wm_001",
+          "appliance_type": "Washing Machine",
+          "state": "completed",
+          "program": "Cotton 40",
+          "kwh_estimate": "0.75",
+          "water_l_estimate": "48",
+          "price_band": "medium",
+          "action_policy": "silent_notification",
+          "event_note": "Finished during Erna meeting"
+        },
+        {
+          "event_id": "evt_010",
+          "timestamp": "2026-06-09T15:58:00+02:00",
+          "appliance_id": "appl_oven_001",
+          "appliance_type": "Oven",
+          "state": "started",
+          "program": "Preheat 180C",
+          "kwh_estimate": "0.20",
+          "water_l_estimate": "0",
+          "price_band": "high",
+          "action_policy": "monitor_only",
+          "event_note": "Oven preheating before dinner prep"
+        },
+        {
+          "event_id": "evt_011",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "appliance_id": "appl_dw_001",
+          "appliance_type": "Dishwasher",
+          "state": "running",
+          "program": "Eco 50",
+          "kwh_estimate": "0.50",
+          "water_l_estimate": "4",
+          "price_band": "high",
+          "action_policy": "no_action",
+          "event_note": "35 minutes remaining"
+        },
+        {
+          "event_id": "evt_012",
+          "timestamp": "2026-06-09T17:30:00+02:00",
+          "appliance_id": "appl_oven_001",
+          "appliance_type": "Oven",
+          "state": "running",
+          "program": "Fan 180C",
+          "kwh_estimate": "1.10",
+          "water_l_estimate": "0",
+          "price_band": "medium",
+          "action_policy": "monitor",
+          "event_note": "Dinner cooking"
+        },
+        {
+          "event_id": "evt_013",
+          "timestamp": "2026-06-09T17:31:00+02:00",
+          "appliance_id": "appl_hood_001",
+          "appliance_type": "Hood",
+          "state": "started",
+          "program": "Auto Ventilation",
+          "kwh_estimate": "0.08",
+          "water_l_estimate": "0",
+          "price_band": "none",
+          "action_policy": "automatic",
+          "event_note": "Air quality dropped during cooking"
+        }
+      ]
+    },
+    {
+      "use_case": "food_inventory",
+      "records": [
+        {
+          "food_id": "food_001",
+          "item_name": "Milk",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-10",
+          "urgency": "low",
+          "routine_relevance": "breakfast_lunchbox",
+          "llm_use": "add_to_grocery_list",
+          "sensitivity": "not_sensitive"
+        },
+        {
+          "food_id": "food_002",
+          "item_name": "Yogurt",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-10",
+          "urgency": "medium",
+          "routine_relevance": "kids_lunchbox",
+          "llm_use": "suggest_use_today",
+          "sensitivity": "not_sensitive"
+        },
+        {
+          "food_id": "food_003",
+          "item_name": "Spinach",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-09",
+          "urgency": "high",
+          "routine_relevance": "lunch_dinner",
+          "llm_use": "suggest_recipe",
+          "sensitivity": "not_sensitive"
+        },
+        {
+          "food_id": "food_004",
+          "item_name": "Bell peppers",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-10",
+          "urgency": "medium",
+          "routine_relevance": "lunch_dinner",
+          "llm_use": "suggest_recipe",
+          "sensitivity": "not_sensitive"
+        },
+        {
+          "food_id": "food_005",
+          "item_name": "Eggs",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-18",
+          "urgency": "low",
+          "routine_relevance": "quick_lunch",
+          "llm_use": "recipe_candidate",
+          "sensitivity": "not_sensitive"
+        },
+        {
+          "food_id": "food_006",
+          "item_name": "Chicken",
+          "storage_location": "fridge",
+          "expiry_date": "2026-06-11",
+          "urgency": "medium",
+          "routine_relevance": "dinner",
+          "llm_use": "suggest_dinner_plan",
+          "sensitivity": "not_sensitive"
+        }
+      ]
+    },
+    {
+      "use_case": "autonomy_rules",
+      "records": [
+        {
+          "rule_id": "rule_001",
+          "rule_name": "Work Focus Mode",
+          "trigger_condition": "calendar_event_busy AND user_location=home_office",
+          "possible_action": "silence_non_urgent_notifications",
+          "autonomy_level": "automatic",
+          "risk_level": "low",
+          "status": "enabled",
+          "reason": "User already consented in preferences"
+        },
+        {
+          "rule_id": "rule_002",
+          "rule_name": "Dishwasher Peak Delay",
+          "trigger_condition": "dishwasher_full AND tariff=peak AND no_urgent_need",
+          "possible_action": "delay_cycle",
+          "autonomy_level": "suggest_first",
+          "risk_level": "medium",
+          "status": "learning",
+          "reason": "Money/schedule impact"
+        },
+        {
+          "rule_id": "rule_003",
+          "rule_name": "Window Heating Pause",
+          "trigger_condition": "window_open_more_than_10min AND heating_on_same_room",
+          "possible_action": "pause_heating",
+          "autonomy_level": "suggest_first",
+          "risk_level": "medium",
+          "status": "not_enabled",
+          "reason": "Comfort and cost impact"
+        },
+        {
+          "rule_id": "rule_004",
+          "rule_name": "Hood Air Quality Auto",
+          "trigger_condition": "hob_or_oven_active AND co2_or_humidity_rising",
+          "possible_action": "start_hood",
+          "autonomy_level": "automatic",
+          "risk_level": "low",
+          "status": "enabled",
+          "reason": "Safety/comfort low risk reversible"
+        },
+        {
+          "rule_id": "rule_005",
+          "rule_name": "Oven Inactivity Safety",
+          "trigger_condition": "oven_on AND no_kitchen_motion_more_than_20min",
+          "possible_action": "notify_or_ask_turn_off",
+          "autonomy_level": "must_ask",
+          "risk_level": "high",
+          "status": "enabled",
+          "reason": "Safety critical"
+        },
+        {
+          "rule_id": "rule_006",
+          "rule_name": "Bedtime Routine",
+          "trigger_condition": "school_night AND time_near_20:00",
+          "possible_action": "start_evening_routine",
+          "autonomy_level": "suggest_first",
+          "risk_level": "medium",
+          "status": "enabled",
+          "reason": "Child/family routine"
+        },
+        {
+          "rule_id": "rule_007",
+          "rule_name": "External Data Sharing",
+          "trigger_condition": "any_request_to_share_home_data",
+          "possible_action": "share_data",
+          "autonomy_level": "must_ask",
+          "risk_level": "high",
+          "status": "enabled",
+          "reason": "Privacy critical"
+        }
+      ]
+    },
+    {
+      "use_case": "llm_context_snapshots",
+      "records": [
+        {
+          "context_id": "ctx_0700",
+          "timestamp": "2026-06-09T07:00:00+02:00",
+          "scenario": "morning_routine",
+          "context_summary": "Erna wakes before children; cold rainy morning; dishwasher finished overnight; kitchen 19C; meeting at 08:30",
+          "llm_task": "Suggest gentle heating or confirm automatic 1C if allowed",
+          "reasoning_domains": "comfort + morning routine",
+          "risk_level": "medium",
+          "consent_policy": "ask_or_explain"
+        },
+        {
+          "context_id": "ctx_0910",
+          "timestamp": "2026-06-09T09:10:00+02:00",
+          "scenario": "dishwasher_budget",
+          "context_summary": "Dishwasher full; price medium-high; lower price after 13:00; no urgent dishes; budget pace high",
+          "llm_task": "Suggest delay to 13:15 and show estimated saving",
+          "reasoning_domains": "energy budget + appliance scheduling",
+          "risk_level": "medium",
+          "consent_policy": "suggest_first"
+        },
+        {
+          "context_id": "ctx_1545",
+          "timestamp": "2026-06-09T15:45:00+02:00",
+          "scenario": "laundry_meeting",
+          "context_summary": "Washing machine finished; Erna in meeting; notification preference silent",
+          "llm_task": "Send silent reminder and offer remind after meeting",
+          "reasoning_domains": "work focus + appliance reminder",
+          "risk_level": "low",
+          "consent_policy": "automatic_notify"
+        },
+        {
+          "context_id": "ctx_1600",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "scenario": "main_demo_conflict",
+          "context_summary": "Erna in video meeting; kids home; oven preheating; kitchen window open; heating on; high energy price; washer finished; dishwasher running; budget 72% halfway through month",
+          "llm_task": "Generate combined insight card with suggested plan and explicit consent",
+          "reasoning_domains": "energy + safety + work + family",
+          "risk_level": "high",
+          "consent_policy": "must_ask_for_actions"
+        },
+        {
+          "context_id": "ctx_1945",
+          "timestamp": "2026-06-09T19:45:00+02:00",
+          "scenario": "bedtime_routine",
+          "context_summary": "School night; bedtime near; living room lights bright; kids bedroom 21C; TV active 45min",
+          "llm_task": "Ask if Erna wants evening routine; avoid judgmental language",
+          "reasoning_domains": "family routine + comfort",
+          "risk_level": "medium",
+          "consent_policy": "suggest_first"
+        }
+      ]
+    },
+    {
+      "use_case": "insight_cards",
+      "records": [
+        {
+          "insight_id": "ins_001",
+          "context_id": "ctx_0910",
+          "title": "Energy Saving Opportunity",
+          "detected_pattern": "Dishwasher can run later at lower energy price",
+          "priority": "medium",
+          "recommended_action": "Delay dishwasher to 13:15",
+          "card_type": "suggestion",
+          "user_response": "accepted",
+          "estimated_saving": "€0.42",
+          "privacy_risk": "low",
+          "llm_message": "The dishwasher is full, but energy prices will be lower after 13:00. Since you are above budget pace, I suggest delaying it."
+        },
+        {
+          "insight_id": "ins_002",
+          "context_id": "ctx_1545",
+          "title": "Laundry Finished During Meeting",
+          "detected_pattern": "Washer finished while Erna is in meeting",
+          "priority": "low",
+          "recommended_action": "Remind after meeting",
+          "card_type": "automatic_notification",
+          "user_response": "accepted",
+          "estimated_saving": "0",
+          "privacy_risk": "low",
+          "llm_message": "Laundry finished. You are currently in a meeting, so I can remind you again when it ends."
+        },
+        {
+          "insight_id": "ins_003",
+          "context_id": "ctx_1600",
+          "title": "Meeting + Energy + Safety Conflict",
+          "detected_pattern": "Several events overlap: oven, window, heating, high price, meeting, kids home",
+          "priority": "high",
+          "recommended_action": "Apply suggested plan: pause kitchen heating, monitor oven, delay reminders",
+          "card_type": "consent_required",
+          "user_response": "accepted",
+          "estimated_saving": "€0.30 estimated",
+          "privacy_risk": "medium",
+          "llm_message": "I noticed several things happening at the same time. I need your permission before changing heating or oven-related settings."
+        },
+        {
+          "insight_id": "ins_004",
+          "context_id": "ctx_1945",
+          "title": "Evening Routine Suggestion",
+          "detected_pattern": "Bedtime routine is near on school night",
+          "priority": "medium",
+          "recommended_action": "Start bedtime routine in 15 minutes",
+          "card_type": "suggestion",
+          "user_response": "accepted_delay",
+          "estimated_saving": "0",
+          "privacy_risk": "low",
+          "llm_message": "It is close to the kids’ usual bedtime. Would you like me to start the evening routine?"
+        },
+        {
+          "insight_id": "ins_005",
+          "context_id": "ctx_0700",
+          "title": "Morning Comfort Adjustment",
+          "detected_pattern": "Kitchen colder than preferred before school routine",
+          "priority": "medium",
+          "recommended_action": "Warm kitchen by 1C or explain automatic adjustment",
+          "card_type": "suggestion",
+          "user_response": "pending",
+          "estimated_saving": "small cost",
+          "privacy_risk": "low",
+          "llm_message": "Today is colder than usual and you have a meeting at 08:30. The kitchen is slightly cooler than preferred."
+        }
+      ]
+    },
+    {
+      "use_case": "action_log",
+      "records": [
+        {
+          "action_id": "act_001",
+          "timestamp": "2026-06-09T08:25:00+02:00",
+          "rule_id": "rule_001",
+          "context_id": "ctx_workfocus",
+          "action_taken": "activate_work_focus",
+          "approval_type": "automatic",
+          "status": "completed",
+          "risk_level": "low",
+          "explanation": "No user prompt needed; preference already enabled"
+        },
+        {
+          "action_id": "act_002",
+          "timestamp": "2026-06-09T09:10:00+02:00",
+          "rule_id": "rule_002",
+          "context_id": "ctx_0910",
+          "action_taken": "delay_dishwasher_to_13_15",
+          "approval_type": "user_approved",
+          "status": "completed",
+          "risk_level": "medium",
+          "explanation": "Money/schedule impact"
+        },
+        {
+          "action_id": "act_003",
+          "timestamp": "2026-06-09T13:15:00+02:00",
+          "rule_id": "rule_002",
+          "context_id": "ctx_0910",
+          "action_taken": "start_dishwasher",
+          "approval_type": "approved_prior",
+          "status": "completed",
+          "risk_level": "low",
+          "explanation": "Based on earlier user approval"
+        },
+        {
+          "action_id": "act_004",
+          "timestamp": "2026-06-09T15:45:00+02:00",
+          "rule_id": "rule_001",
+          "context_id": "ctx_1545",
+          "action_taken": "send_silent_laundry_notification",
+          "approval_type": "automatic",
+          "status": "completed",
+          "risk_level": "low",
+          "explanation": "Meeting mode active"
+        },
+        {
+          "action_id": "act_005",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "rule_id": "rule_003",
+          "context_id": "ctx_1600",
+          "action_taken": "pause_kitchen_heating_45min",
+          "approval_type": "user_approved",
+          "status": "completed",
+          "risk_level": "medium",
+          "explanation": "Heating/money/comfort requires consent"
+        },
+        {
+          "action_id": "act_006",
+          "timestamp": "2026-06-09T16:00:00+02:00",
+          "rule_id": "rule_005",
+          "context_id": "ctx_1600",
+          "action_taken": "monitor_oven",
+          "approval_type": "automatic_monitoring",
+          "status": "completed",
+          "risk_level": "medium",
+          "explanation": "No intervention, monitoring only"
+        },
+        {
+          "action_id": "act_007",
+          "timestamp": "2026-06-09T19:45:00+02:00",
+          "rule_id": "rule_006",
+          "context_id": "ctx_1945",
+          "action_taken": "start_bedtime_routine_in_15min",
+          "approval_type": "user_approved_delay",
+          "status": "scheduled",
+          "risk_level": "medium",
+          "explanation": "Family routine requires parent control"
+        }
+      ]
+    },
+    {
+      "use_case": "user_feedback",
+      "records": [
+        {
+          "feedback_id": "fb_001",
+          "user_id": "user_erna_001",
+          "insight_id": "ins_001",
+          "response": "accepted",
+          "comment": "Useful, clear saving",
+          "learning_update": "increase_confidence_dishwasher_delay",
+          "timestamp": "2026-06-09T09:11:00+02:00"
+        },
+        {
+          "feedback_id": "fb_002",
+          "user_id": "user_erna_001",
+          "insight_id": "ins_002",
+          "response": "accepted",
+          "comment": "Good not to interrupt meeting",
+          "learning_update": "increase_confidence_work_focus",
+          "timestamp": "2026-06-09T15:46:00+02:00"
+        },
+        {
+          "feedback_id": "fb_003",
+          "user_id": "user_erna_001",
+          "insight_id": "ins_003",
+          "response": "accepted",
+          "comment": "Helpful combined plan",
+          "learning_update": "increase_confidence_window_heating_pause",
+          "timestamp": "2026-06-09T16:01:00+02:00"
+        },
+        {
+          "feedback_id": "fb_004",
+          "user_id": "user_erna_001",
+          "insight_id": "ins_004",
+          "response": "accepted_delay",
+          "comment": "Needed 15 more minutes",
+          "learning_update": "learn_bedtime_delay_preference",
+          "timestamp": "2026-06-09T19:46:00+02:00"
+        }
+      ]
+    },
+    {
+      "use_case": "weekly_report",
+      "records": [
+        {
+          "report_id": "week_2026_24",
+          "period_start": "2026-06-03",
+          "period_end": "2026-06-09",
+          "comfort_score": "81%",
+          "energy_status": "72% budget used at 50% month progress",
+          "projected_over_budget": "€14 projected over",
+          "dishwasher_cycles": "5",
+          "washing_machine_cycles": "4",
+          "food_items_saved": "3",
+          "safety_summary": "0 critical / 1 medium",
+          "recommended_next_rule": "Suggest dishwasher delay automation and window-heating rule"
+        }
+      ]
+    }
+  ]
+}
