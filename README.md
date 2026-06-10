@@ -52,7 +52,7 @@ graph LR;
         Gateway -->|Data Ingestion| API[AssistedHome; AWS API Gateway]
         API <--> DB[(MongoDB)]
         API <--> ML[AWS Agentcore LLM]
-        API <--> ext[external information (weather, energy prices)]
+        API <--> ext[external information; weather, energy prices]
     end
 
 
