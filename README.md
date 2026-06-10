@@ -49,9 +49,10 @@ graph LR;
     end
     
     subgraph Cloud / Backend
-        Gateway -->|Data Ingestion| API[AWS API Gateway]
+        Gateway -->|Data Ingestion| API[AssistedHome; AWS API Gateway]
         API <--> DB[(MongoDB)]
-        API <--> ML[AI/ML Model]
+        API <--> ML[AWS Agentcore LLM]
+        API <--> ext[external information (weather, energy prices)]
     end
 
 
