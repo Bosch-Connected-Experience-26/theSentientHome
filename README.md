@@ -21,14 +21,19 @@
 |Charlotte Selter | @charlotteselter-hub (https://github.com/charlotteselter-hub) | Product Manager |
 | | | |
 
+Problem Statement: Smart homes today are just a collection of connected, manual buttons rather than adaptive environments.
+
+Mission: Use LLMs and Home Connect APIs to build a proactive companion that anticipates routines and adapts to your daily mood. transform the smart home from a collection of connected devices into a truly "sentient" entity. The goal is to create an AI-powered home companion that understands, anticipates, and adapts to the user's needs and lifestyle. This goes beyond simple voice commands, aiming for a proactive, personalized, and deeply integrated home experience.
+
+Business Impact: Improved customer or user experience, New digital products or services
+
 ## **Challenge**
 
-*[Which challenge have you decided to compete for?]*
+Bosch Sentient Home
 
 ## **Core Idea**
 
-*[What is your rough solution idea?]*
-
+An intelligent intermediary between BCH and LLMs
 <br>
 
 ## **Miro Board**
