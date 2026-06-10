@@ -15,6 +15,31 @@ import {
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const wait = (ms = 220) => new Promise((resolve) => setTimeout(resolve, ms));
+const agentApiUrl = import.meta.env.VITE_AGENT_API_URL || 'http://localhost:8000';
+
+async function askBackendAssistant(message, context = {}) {
+  const response = await fetch(`${agentApiUrl}/api/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message,
+      conversation: context.conversation || [],
+      context: {
+        overview: context.overview,
+        actions: context.actions,
+        family: context.family
+      }
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Agent API returned ${response.status}`);
+  }
+
+  return response.json();
+}
 
 export const mockApi = {
   async getHomeOverview() {
@@ -148,6 +173,12 @@ export const mockApi = {
   },
 
   async askAssistant(message, context = {}) {
+    try {
+      return await askBackendAssistant(message, context);
+    } catch (error) {
+      console.warn('Falling back to mock assistant response:', error);
+    }
+
     await wait(360);
     const lower = message.toLowerCase();
 

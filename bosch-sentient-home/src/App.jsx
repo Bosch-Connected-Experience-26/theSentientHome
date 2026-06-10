@@ -145,8 +145,14 @@ export default function App() {
 
   const askAssistant = async (text) => {
     const userMessage = { id: `user-${Date.now()}`, role: 'user', text };
-    setMessages((current) => [...current, userMessage]);
-    const assistantMessage = await mockApi.askAssistant(text, { overview, actions, family });
+    const nextMessages = [...messages, userMessage];
+    setMessages(nextMessages);
+    const assistantMessage = await mockApi.askAssistant(text, {
+      overview,
+      actions,
+      family,
+      conversation: nextMessages
+    });
     setMessages((current) => [...current, assistantMessage]);
   };
 

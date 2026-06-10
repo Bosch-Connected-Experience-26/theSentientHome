@@ -66,6 +66,23 @@ mdb_strands_agentcore/
 
 ## Usage
 
+### Local REST API for React Frontend
+
+Start the local chat bridge used by `bosch-sentient-home`:
+
+```bash
+pip install -r requirements.txt
+uvicorn api:api --host 0.0.0.0 --port 8000 --reload
+```
+
+The frontend sends chat requests to:
+
+```text
+POST http://localhost:8000/api/chat
+```
+
+The endpoint accepts `message`, recent `conversation`, and lightweight frontend `context`, then returns the assistant message shape expected by the React chat UI.
+
 ### Direct API Testing
 
 Test the agent directly using the command-line interface:

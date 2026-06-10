@@ -26,6 +26,14 @@ Open the local URL shown by Vite, usually:
 http://localhost:5173
 ```
 
+To connect the assistant chat to the local AgentCore backend bridge, start the backend on port 8000 and optionally set:
+
+```bash
+VITE_AGENT_API_URL=http://localhost:8000
+```
+
+If the backend is unavailable, the assistant falls back to the local mock response logic.
+
 ## Build
 
 ```bash
@@ -103,7 +111,7 @@ Suggested endpoint mapping:
 - `mockApi.getActions()` → `GET /api/ai/actions`
 - `mockApi.approveAction(id)` → `POST /api/ai/actions/:id/approve`
 - `mockApi.rejectAction(id)` → `POST /api/ai/actions/:id/reject`
-- `mockApi.askAssistant(message)` → `POST /api/assistant/chat`
+- `mockApi.askAssistant(message)` → `POST /api/chat`
 - `mockApi.getModes()` → `GET /api/modes`
 - `mockApi.activateMode(id)` → `POST /api/modes/activate`
 - `mockApi.createCustomMode(payload)` → `POST /api/modes/custom`

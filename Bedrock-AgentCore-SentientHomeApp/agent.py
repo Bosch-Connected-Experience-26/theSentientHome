@@ -683,53 +683,50 @@ agent = Agent(
         "preferences. Use mock_bosch_appliance_call for simulated Bosch Home Connect "
         "appliance actions. The Bosch tool is a mock only; do not claim that a real "
         "appliance API was called. Keep frontend-facing replies concise and natural. "
-        "Do not include raw tool JSON in the user response unless the user explicitly asks."
+        "Do not include raw tool JSON in the user response unless the user explicitly asks. "
+        "Never include internal reasoning, thinking tags, chain-of-thought, or analysis "
+        "markup in the final response."
     )
 )
 
-@app.entrypoint
-def run_agent(user_input) -> str:
-    """Run the agent with user input and return response"""
-    # Extract the actual prompt from the input
-    if isinstance(user_input, dict) and 'prompt' in user_input:
-        prompt = user_input['prompt']
-    elif isinstance(user_input, str):
-        prompt = user_input
-    else:
-        prompt = str(user_input)
-    
-    logger.info(f"Processing user input: {prompt}")
-    response = agent(prompt)
-    
+
+def sanitize_agent_text(text: str) -> str:
+    """Remove internal reasoning markup from model text before returning it to clients."""
+    text = re.sub(r"<thinking>.*?</thinking>", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"</?thinking>", "", text, flags=re.IGNORECASE)
+    return text.strip()
+
+
+def extract_agent_response_text(response) -> str:
     # Handle different response types
     try:
         # Try to get the content from message structure
         if hasattr(response, 'message') and response.message:
-            return response.message['content'][0]['text']
+            return sanitize_agent_text(response.message['content'][0]['text'])
         # Try to get content attribute
         elif hasattr(response, 'content'):
-            return response.content
+            return sanitize_agent_text(str(response.content))
         # Try to get text attribute
         elif hasattr(response, 'text'):
-            return response.text
+            return sanitize_agent_text(str(response.text))
         # Handle Starlette JSONResponse objects specifically
         elif hasattr(response, 'body'):
             if isinstance(response.body, bytes):
-                return response.body.decode('utf-8')
+                return sanitize_agent_text(response.body.decode('utf-8'))
             else:
-                return str(response.body)
+                return sanitize_agent_text(str(response.body))
         # Check if it's a Starlette JSONResponse and try to get the body
         elif str(type(response)).find('starlette') != -1:
             # For Starlette responses, try to access the body directly
             if hasattr(response, '_body'):
                 body = response._body
                 if isinstance(body, bytes):
-                    return body.decode('utf-8')
+                    return sanitize_agent_text(body.decode('utf-8'))
                 else:
-                    return str(body)
+                    return sanitize_agent_text(str(body))
             # If no _body, try other Starlette-specific attributes
             elif hasattr(response, 'content'):
-                return response.content
+                return sanitize_agent_text(str(response.content))
             else:
                 logger.warning(f"Starlette response detected but couldn't extract content: {type(response)}")
                 return "I apologize, but I'm experiencing a technical issue with the response format. Please try again."
@@ -740,13 +737,63 @@ def run_agent(user_input) -> str:
             if "starlette.responses.JSONResponse object" in result:
                 logger.error(f"Failed to extract content from Starlette response: {result}")
                 return "I apologize, but I'm experiencing a technical issue with the response format. Please try again."
-            return result
+            return sanitize_agent_text(result)
     except Exception as e:
         logger.error(f"Error extracting response: {e}")
         result = str(response)
         if "starlette.responses.JSONResponse object" in result:
             return "I apologize, but I'm experiencing a technical issue with the response format. Please try again."
-        return result
+        return sanitize_agent_text(result)
+
+
+def build_agent_prompt(prompt: str, conversation: list | None = None, context: dict | None = None) -> str:
+    """Include compact UI context and recent chat turns without exposing raw internals to the user."""
+    sections = []
+    if conversation:
+        recent_turns = conversation[-8:]
+        rendered_turns = [
+            f"{turn.get('role', 'unknown')}: {turn.get('text', '')}"
+            for turn in recent_turns
+            if isinstance(turn, dict)
+        ]
+        if rendered_turns:
+            sections.append("Recent conversation:\n" + "\n".join(rendered_turns))
+
+    if context:
+        sections.append(
+            "Frontend context JSON:\n"
+            + json.dumps(context, default=str)[:6000]
+        )
+
+    sections.append("Current user request:\n" + prompt)
+    return "\n\n".join(sections)
+
+
+def generate_agent_response(prompt: str, conversation: list | None = None, context: dict | None = None) -> str:
+    """Run the smart-home agent and return frontend-safe text."""
+    agent_prompt = build_agent_prompt(prompt, conversation, context)
+    logger.info(f"Processing user input: {prompt}")
+    response = agent(agent_prompt)
+    return extract_agent_response_text(response)
+
+
+@app.entrypoint
+def run_agent(user_input) -> str:
+    """Run the agent with user input and return response"""
+    if isinstance(user_input, dict):
+        prompt = user_input.get('prompt', str(user_input))
+        conversation = user_input.get('conversation')
+        context = user_input.get('context')
+    elif isinstance(user_input, str):
+        prompt = user_input
+        conversation = None
+        context = None
+    else:
+        prompt = str(user_input)
+        conversation = None
+        context = None
+
+    return generate_agent_response(prompt, conversation, context)
 
 if __name__ == "__main__":  
     app.run()
