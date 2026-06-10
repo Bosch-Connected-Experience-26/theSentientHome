@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Smart Home Hackathon Ambient Assisted Living Dataset",
+  "description": "Synthetic Home Connect API events, status arrays, and action requests matching use cases UC-01 through UC-18 for senior resident Erna.",
+  "target_resident": "Erna",
+  "age": 79,
+  "last_updated": "2026-06-09T14:35:00Z",
+  "use_cases": [
+    {
+      "id": "UC-01",
+      "title": "Silent morning",
+      "description": "Coffee machine not used by 10am three days in a row. Pattern agent detects streak, Safety agent confirms movement, Response agent acts.",
+      "payload_type": "STATUS_RESPONSE",
+      "endpoint": "/api/homeappliances/COFFEE_MAKER_ERNA_01/status",
+      "data": {
+        "status": [
+          {
+            "key": "BSH.Common.Status.OperationState",
+            "value": "BSH.Common.EnumType.OperationState.Standby",
+            "name": "Operation State"
+          },
+          {
+            "key": "BSH.Common.Status.LocalControlActive",
+            "value": false,
+            "name": "Local Control"
+          }
+        ]
+      },
+      "agent_orchestration": {
+        "pattern_agent": "StreakDetected(Appliance: CoffeeMaker, Condition: Inactive, ConsecDays: 3, ThresholdTime: '10:00:00')",
+        "safety_agent": "MovementConfirmed(Source: LivingRoomPIR, Timestamp: '2026-06-09T09:42:15Z')",
+        "response_agent": {
+          "primary_action": "VoiceCheckIn(SpeakerId: 'LIVING_ROOM_ECHO', Track: 'warm_nudge_04')",
+          "fallback_action_on_no_response": "SendTelegram(To: 'Daughter_Lisa', Message: 'Mom has been quiet three mornings in a row – might be worth a call today.')"
+        }
+      }
+    },
+    {
+      "id": "UC-02",
+      "title": "Drifting wake time",
+      "description": "First device interaction shifts 15min later every day over 2 weeks. Pattern agent detects slow drift, Response agent composes summary.",
+      "payload_type": "ANALYTICS_METRICS",
+      "endpoint": "/api/analytics/agents/pattern/drift-analysis",
+      "data": {
+        "metric_key": "BSH.Common.Status.FirstInteractionTime",
+        "observed_period_days": 14,
+        "drift_pattern": "LinearDelay",
+        "average_daily_shift_minutes": 15.2,
+        "baseline_wake_time": "07:30:00",
+        "current_wake_time": "11:02:00"
+      },
+      "agent_orchestration": {
+        "pattern_agent": "FlagTrend(Type: 'ChronobiologicalDrift', Confidence: 0.94)",
+        "response_agent": {
+          "action": "QueueWeeklySummary(Recipient: 'Daughter_Lisa')",
+          "telegram_body": "Erna's been starting her days later this week. Nothing urgent, just a pattern worth knowing."
+        }
+      }
+    },
+    {
+      "id": "UC-03",
+      "title": "Forgotten laundry",
+      "description": "Washing machine finished 2 hours ago. Door remains closed. Safety agent notices elapsed time, Response agent nudges.",
+      "payload_type": "SSE_EVENT",
+      "endpoint": "/api/homeappliances/WASHER_ERNA_01/events",
+      "data": {
+        "event": "STATUS",
+        "items": [
+          {
+            "key": "BSH.Common.Status.OperationState",
+            "value": "BSH.Common.EnumType.OperationState.Finished",
+            "duration_in_state_seconds": 7200
+          },
+          {
+            "key": "BSH.Common.Status.DoorState",
+            "value": "BSH.Common.EnumType.DoorState.Closed"
+          }
+        ]
+      },
+      "agent_orchestration": {
+        "safety_agent": "UnloadTimeoutExceeded(Appliance: Washer, MaxAllowedSeconds: 3600, ActualSeconds: 7200)",
+        "response_agent": {
+          "condition": "WaitUntilRoomCalm(TargetRoom: 'Kitchen', MotionPIR: 'Inactive')",
+          "action": "VoiceNudge(Target: 'Kitchen_Speaker', Message: 'Erna, your laundry is still in the machine – want me to remind you later?')"
+        }
+      }
+    },
+    {
+      "id": "UC-04",
+      "title": "Shrinking meals",
+      "description": "Cooktop duration drops week over week (32min to 8min). Pattern agent detects decline, Response agent suggests easy lunch.",
+      "payload_type": "HISTORICAL_QUERY",
+      "endpoint": "/api/homeappliances/HOB_ERNA_01/history/aggregated",
+      "data": {
+        "appliance_type": "Hob",
+        "aggregation_interval": "Weekly",
+        "history": [
+          { "week": 1, "avg_active_duration_minutes": 32.0 },
+          { "week": 2, "avg_active_duration_minutes": 24.5 },
+          { "week": 3, "avg_active_duration_minutes": 15.0 },
+          { "week": 4, "avg_active_duration_minutes": 8.0 }
+        ]
+      },
+      "agent_orchestration": {
+        "pattern_agent": "DeclineTrendTrigger(Metric: 'NutritionalCookingTime', Severity: 'Moderate')",
+        "response_agent": {
+          "immediate_action": "VoiceSuggestion(SpeakerId: 'Kitchen_Speaker', Message: 'Erna, there are eggs in the fridge – lovely for a quick lunch.')",
+          "secondary_action": "SetFlagInWeeklyDigest(Recipient: 'Daughter_Lisa', Flag: 'NutritionalCookingTimeDecline')"
+        }
+      }
+    },
+    {
+      "id": "UC-05",
+      "title": "Unattended cooktop",
+      "description": "Cooktop on for 47min. No kitchen motion for 20min. Safety agent triggers shutdown immediately, Response agent escalates.",
+      "payload_type": "EMERGENCY_SHUTDOWN_REQUEST",
+      "endpoint": "/api/homeappliances/HOB_ERNA_01/programs/active",
+      "action": "DELETE",
+      "data": {
+        "trigger_reason": "SafetyAgent_Unattended_Heat_Source",
+        "hob_active_duration_seconds": 2820,
+        "kitchen_motionless_duration_seconds": 1200
+      },
+      "response": {
+        "status": 204,
+        "description": "The active cooking program was successfully stopped due to critical safety override."
+      },
+      "agent_orchestration": {
+        "safety_agent": "TriggerEmergencyOverride(Action: 'ForcedStop')",
+        "response_agent": {
+          "step_1": "VoiceAlert(Location: 'All_Speakers', Message: 'Erna! The cooktop is still active. Please step back into the kitchen.')",
+          "step_2": "Wait(Seconds: 120)",
+          "step_3": "ExecuteRemoteStop()",
+          "step_4": "SendImmediateTelegram(To: 'Daughter_Lisa', Urgency: 'CRITICAL', Message: 'Emergency: Cooktop left unattended for 47 minutes. Smart Home has auto-shutoff the appliance. Please check on her immediately.')"
+        }
+      }
+    },
+    {
+      "id": "UC-06",
+      "title": "Night kitchen confusion",
+      "description": "2:40am. Fridge opened 3x in 6min. Cooktop briefly on. 4th night this week. Safety agent shuts cooktop, Pattern agent flags recurring nights, Response agent acts gently.",
+      "payload_type": "MULTI_APPLIANCE_STREAM",
+      "endpoint": "/api/homeappliances/stream/combined",
+      "data": {
+        "timestamp": "2026-06-09T02:40:12Z",
+        "aggregated_events": [
+          { "haId": "REFRIGERATOR_ERNA_01", "key": "BSH.Common.Status.DoorState", "value": "BSH.Common.EnumType.DoorState.Open", "timestamp": "2026-06-09T02:34:00Z" },
+          { "haId": "REFRIGERATOR_ERNA_01", "key": "BSH.Common.Status.DoorState", "value": "BSH.Common.EnumType.DoorState.Open", "timestamp": "2026-06-09T02:37:10Z" },
+          { "haId": "REFRIGERATOR_ERNA_01", "key": "BSH.Common.Status.DoorState", "value": "BSH.Common.EnumType.DoorState.Open", "timestamp": "2026-06-09T02:39:45Z" },
+          { "haId": "HOB_ERNA_01", "key": "BSH.Common.Status.OperationState", "value": "BSH.Common.EnumType.OperationState.Run", "timestamp": "2026-06-09T02:40:02Z" }
+        ]
+      },
+      "agent_orchestration": {
+        "safety_agent": "ForcedStopAppliance(Target: 'HOB_ERNA_01', Reason: 'NocturnalConfusionRisk')",
+        "pattern_agent": "LogNocturnalAnxietyEvent(OccurrenceThisWeek: 4)",
+        "response_agent": {
+          "action": "VoiceBroadcast(SpeakerId: 'Kitchen_Speaker', Tone: 'Soothing', Message: 'Erna, it\\'s 2am – everything is off and safe. Your breakfast is set for 8am.')",
+          "reporting": "AppendToPatternReport(Recipient: 'Daughter_Lisa', Issue: 'Frequent Nighttime Kitchen Confusion')"
+        }
+      }
+    },
+    {
+      "id": "UC-07",
+      "title": "Total stillness",
+      "description": "No device interaction for 4.5hrs during waking hours. Vacuum ran but never had to avoid her. Safety agent escalates immediately.",
+      "payload_type": "VACUUM_DIAGNOSTIC_QUERY",
+      "endpoint": "/api/homeappliances/CLEANING_ROBOT_ERNA_01/programs/active/options",
+      "data": {
+        "key": "ConsumerProducts.CleaningRobot.Program.Clean",
+        "status": "BSH.Common.EnumType.OperationState.Finished",
+        "telemetry_metrics": {
+          "total_duration_seconds": 5400,
+          "proximity_slowdowns": 0,
+          "lidar_dynamic_obstacle_avoidances": 0,
+          "last_human_interaction_epoch": 1781002680
+        }
+      },
+      "agent_orchestration": {
+        "safety_agent": "EscalateStillnessAnomaly(DurationMinutes: 270, VacuumValidation: 'Confirmed_Empty_Path')",
+        "response_agent": {
+          "action": "SendBroadcastAlerts",
+          "targets": [
+            { "channel": "Telegram", "user": "Daughter_Lisa", "text": "No movement detected since 9:58am. Please check in." },
+            { "channel": "SMS", "user": "Emergency_Contact_Neighbor", "text": "Alert: No activity at Erna's home for 4.5 hours. Please complete physical wellness verification." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "UC-08",
+      "title": "Cold snap at night",
+      "description": "Tonight drops to -3°C. Bedroom window left open. Erna is asleep. Safety agent detects open window + weather API, Comfort agent acts silently.",
+      "payload_type": "ENVIRONMENT_OVERRIDE",
+      "endpoint": "/api/environment/actuators/window_bedroom",
+      "action": "PUT",
+      "data": {
+        "external_weather_api": { "condition": "FreezeWarning", "outdoor_temp_celsius": -3.0 },
+        "window_sensor_state": "Open",
+        "resident_state": "Asleep",
+        "requested_state": "Closed"
+      },
+      "agent_orchestration": {
+        "safety_agent": "IdentifyHypothermiaRisk(IndoorDropRate: 'Accelerated')",
+        "comfort_agent": {
+          "silent_execution": true,
+          "action": "CloseActuator(Target: 'WINDOW_BEDROOM_ACTUATOR')"
+        },
+        "response_agent": {
+          "delayed_action_morning": "VoiceBriefing(Timestamp: '08:05:00', Message: 'I closed your window last night – it got quite cold.')"
+        }
+      }
+    },
+    {
+      "id": "UC-09",
+      "title": "Daughter visit incoming",
+      "description": "Daughter arriving at 3pm. It's 1:30pm. No prep started. She always bakes on visit days. Pattern agent surfaces visit habit, Comfort agent warms kitchen, Response agent nudges.",
+      "payload_type": "APPLIANCE_PREHEAT_COMMAND",
+      "endpoint": "/api/homeappliances/OVEN_ERNA_01/programs/active",
+      "action": "PUT",
+      "body": {
+        "data": {
+          "key": "Cooking.Oven.Program.HeatingMode.TopBottomHeating",
+          "options": [
+            { "key": "Cooking.Oven.Option.SetpointTemperature", "value": 180, "unit": "°C" },
+            { "key": "BSH.Common.Option.Duration", "value": 3600, "unit": "seconds" }
+          ]
+        }
+      },
+      "agent_orchestration": {
+        "pattern_agent": "HabitMatch(TriggerEvent: 'Lisa_Arrival_Calendar', Habit: 'PreVisitBaking', Confidence: 0.98)",
+        "comfort_agent": "AdjustHVAC(TargetZone: 'Kitchen', SetpointCelsius: 21.5)",
+        "response_agent": {
+          "action": "VoiceNudge(SpeakerId: 'LivingRoom_Speaker', Message: 'Lisa\\'s coming in 90 minutes – your oven is warming up if you\\'d like to bake.')"
+        }
+      }
+    },
+    {
+      "id": "UC-10",
+      "title": "Bad weather + low activity",
+      "description": "Grey rainy day. Activity score below baseline. Low days correlate 70% with overcast weather. Pattern agent surfaces correlation, Comfort agent adjusts environment.",
+      "payload_type": "SMART_LIGHTING_SCENE",
+      "endpoint": "/api/environment/lighting/scenes",
+      "action": "POST",
+      "data": {
+        "ambient_conditions": { "weather": "Rainy/Overcast", "lux_level_living_room": 120 },
+        "resident_activity_score": 42,
+        "historical_baseline_score": 75,
+        "applied_lighting_preset": "Circadian_Warm_Boost_90",
+        "color_temperature_kelvin": 2700,
+        "brightness_percentage": 85
+      },
+      "agent_orchestration": {
+        "pattern_agent": "EvaluateWeatherCorrelation(CorrelationFactor: 0.70, TriggerState: 'SeasonalDepressionRisk')",
+        "comfort_agent": [
+          "ExecuteLightingScene('Circadian_Warm_Boost_90')",
+          "PlayMediaStream(Target: 'LivingRoom_Audio', Playlist: 'Erna_Familiar_Favorites_Soft')"
+        ],
+        "response_agent": {
+          "action": "VoiceComfortCheck(Message: 'Miserable outside today – I\\'ve made it cosy in here.')"
+        }
+      }
+    },
+    {
+      "id": "UC-11",
+      "title": "Doctor appointment",
+      "description": "GP at 10:30am, 20min drive. It's 9:45am. Front door hasn't opened. Response agent cross-checks calendar + live travel time.",
+      "payload_type": "CALENDAR_INTEGRATION_TRIGGER",
+      "endpoint": "/api/integrations/calendar/alerts",
+      "data": {
+        "appointment_title": "GP Routine Checkup",
+        "scheduled_time": "10:30:00",
+        "current_time": "09:45:00",
+        "live_traffic_duration_seconds": 1200,
+        "door_sensor_history": { "last_opened": "2026-06-08T19:30:00Z", "current_state": "Closed" }
+      },
+      "agent_orchestration": {
+        "response_agent": {
+          "logic": "EvaluateCommuteBuffer(AppointmentTime: 10:30, CurrentTime: 09:45, BufferMinutes: 25)",
+          "action": "VoiceBroadcast(SpeakerId: 'Hallway_Speaker', Message: 'Erna, your appointment is in 45 minutes and it\\'s about 20 minutes by car. Might be time to get ready.')"
+        }
+      }
+    },
+    {
+      "id": "UC-12",
+      "title": "Heatwave incoming",
+      "description": "Tomorrow forecast: 36°C. Erna is 79. Safety agent flags heat risk from weather API, Comfort agent prepares house tonight.",
+      "payload_type": "AUTOMATED_SCHEDULER_INJECTION",
+      "endpoint": "/api/automation/rules/schedule",
+      "action": "POST",
+      "data": {
+        "forecasted_peak_temp_celsius": 36.0,
+        "vulnerability_index": "High_Age_79",
+        "injected_tasks": [
+          { "time": "2026-06-10T08:00:00Z", "device": "BLINDS_SOUTH", "action": "Close_100" },
+          { "time": "2026-06-10T10:00:00Z", "recurring_interval_hours": 2, "device": "KITCHEN_SPEAKER", "action": "Hydration_Audio_Reminder" }
+        ]
+      },
+      "agent_orchestration": {
+        "safety_agent": "RaiseRiskLevel(Type: 'ExtremeHeatImpact', Target: 'ElderlyResident')",
+        "comfort_agent": "PreScheduleThermalShielding(TargetBlinds: 'All', ExecutionTime: '08:00:00')",
+        "response_agent": {
+          "action": "SendNighttimeNotification(To: 'Daughter_Lisa', Channel: 'Telegram', Text: 'It\\'ll be very hot tomorrow – worth checking Erna has enough water.')"
+        }
+      }
+    },
+    {
+      "id": "UC-13",
+      "title": "Isolation spiral",
+      "description": "Cookit not used in 3 weeks. Oven down 60%. No afternoon coffee. Dishwasher twice this week vs six last month. Pattern agent detects multi-device decline.",
+      "payload_type": "CROSS_APPLIANCE_DEGRADATION_REPORT",
+      "endpoint": "/api/analytics/agents/pattern/isolation-spiral-check",
+      "data": {
+        "evaluation_window_days": 21,
+        "anomalies": [
+          { "haId": "COOK_PROCESSOR_ERNA_01", "appliance_type": "CookProcessor", "metric": "DaysSinceLastActive", "value": 21, "baseline": 3 },
+          { "haId": "OVEN_ERNA_01", "appliance_type": "Oven", "metric": "UsageFrequencyReductionPercentage", "value": 60.0 },
+          { "haId": "COFFEE_MAKER_ERNA_01", "appliance_type": "CoffeeMaker", "metric": "AfternoonSessionAbsence", "value": true },
+          { "haId": "DISHWASHER_ERNA_01", "appliance_type": "Dishwasher", "metric": "CyclesThisWeek", "value": 2, "historical_weekly_avg": 6 }
+        ]
+      },
+      "agent_orchestration": {
+        "pattern_agent": "TriggerMutiDeviceDeclineWarning(Classification: 'SocialIsolationSpiral', Confidence: 0.89)",
+        "response_agent": {
+          "action_resident": "VoiceNudge(SpeakerId: 'LivingRoom_Speaker', Speed: 'Slow_Warm', Message: 'Erna, your daughter loves that apple cake you make. Want me to walk you through it this weekend?')",
+          "action_family": "AppendToMonthlySummary(Recipient: 'Daughter_Lisa', Section: 'BehavioralHealthAnomalies', Severity: 'Flagged')"
+        }
+      }
+    },
+    {
+      "id": "UC-14",
+      "title": "Pre-visit excitement",
+      "description": "Activity score 94 – highest in two weeks. Oven used twice. Fridge opened 11 times. Daughter visiting tomorrow. Pattern agent recognises joy signal.",
+      "payload_type": "SSE_EVENT",
+      "endpoint": "/api/homeappliances/fridge/events",
+      "data": {
+        "event": "NOTIFY",
+        "items": [
+          {
+            "key": "BSH.Common.Status.DoorState",
+            "value": "BSH.Common.EnumType.DoorState.Open",
+            "cumulative_count_today": 11
+          }
+        ],
+        "contextual_metrics": {
+          "calculated_activity_score": 94,
+          "oven_cycles_today": 2,
+          "calendar_proximity_hours": 24
+        }
+      },
+      "agent_orchestration": {
+        "pattern_agent": "ClassifyState(Label: 'JoySignal_PreVisitExcitement', SuppressReminders: true)",
+        "comfort_agent": "InitiateAmbientEnhancement(TargetScene: 'Warm_Welcoming_3PM', TargetLights: 'LivingRoom_Hue_Mesh')",
+        "response_agent": {
+          "policy": "SilentObservation",
+          "action": "SuppressAllCheckInsAndNudges(DurationHours: 36)"
+        }
+      }
+    },
+    {
+      "id": "UC-15",
+      "title": "Post-visit low",
+      "description": "Daughter left yesterday. Activity drops 40 points today. Pattern agent expects dip, Safety agent holds escalation, Comfort agent acts.",
+      "payload_type": "BEHAVIOR_SCENARIO_STATE",
+      "endpoint": "/api/analytics/resident/current_state",
+      "data": {
+        "previous_day_activity_score": 94,
+        "current_day_activity_score": 54,
+        "net_drop_points": 40,
+        "temporal_context": "Daughter_Departure_Plus_24h"
+      },
+      "agent_orchestration": {
+        "pattern_agent": "IdentifyKnownDeclineCurve(CurveName: 'PostVisitEmotionalDip', ExpectedRecoveryDays: 2)",
+        "safety_agent": "SuppressEscalation(Condition: 'Baseline_Vitality_Maintained_Through_Basics')",
+        "comfort_agent": [
+          "PlayMediaStream(Playlist: 'Erna_Comfort_Melodies')",
+          "ModifyThermostat(Zone: 'LivingRoom', DeltaCelsius: +0.5)"
+        ],
+        "response_agent": {
+          "policy": "PassiveResponseOnly",
+          "action": "MuteVoicePromptsUntilUserInitiated()",
+          "conditional_escalation_day_3": "SendTelegramIfLowPersists(To: 'Daughter_Lisa', ThresholdDays: 3)"
+        }
+      }
+    },
+    {
+      "id": "UC-16",
+      "title": "Pattern agent vs safety agent disagreement",
+      "description": "Safety agent: no emergency, she moved this morning. Pattern agent: 8-day declining trend, lowest score in 3 months. Agents disagree, Response agent mediates.",
+      "payload_type": "AGENT_MEDIATION_LOG",
+      "endpoint": "/api/system/orchestrator/mediation",
+      "data": {
+        "conflict_id": "CONFLICT_20260609_004",
+        "agent_positions": {
+          "BSH.Agent.Safety": { "escalation_voted": false, "evidence": "LivingRoomPIR_Active_08:14:22" },
+          "BSH.Agent.Pattern": { "escalation_voted": true, "evidence": "8_Day_Declining_Trend_Lowest_Quarterly_Score_41" }
+        },
+        "mediator_resolution": "MiddleGround_Intervention"
+      },
+      "agent_orchestration": {
+        "response_agent": {
+          "role": "Mediator",
+          "action_today": "VoiceCheckIn(Speaker: 'Kitchen_Speaker', Query: 'wellness_inquiry_standard')",
+          "action_tomorrow_conditional": "SendTelegramToFamilyIfStateUnchanged(User: 'Daughter_Lisa')"
+        }
+      }
+    },
+    {
+      "id": "UC-17",
+      "title": "Weather overrides routine",
+      "description": "She always walks on Tuesdays at 10am. Today: -5°C, ice warning. Pattern agent flags routine, Safety agent overrides due to fall risk.",
+      "payload_type": "ROUTINE_OVERRIDE_EVENT",
+      "endpoint": "/api/system/orchestrator/overrides",
+      "data": {
+        "scheduled_routine": "Tuesday_Morning_Walk_1000",
+        "outdoor_temperature_celsius": -5.0,
+        "safety_hazard_flags": ["BlackIceWarning", "HighSeniorFallRisk"],
+        "override_executed": true
+      },
+      "agent_orchestration": {
+        "pattern_agent": "ProposeRoutineReminder(Action: 'PromptOutdoorGear')",
+        "safety_agent": "EnforceOverride(Reason: 'FallPreventionProtocolOverride')",
+        "response_agent": {
+          "action": "VoiceBroadcast(SpeakerId: 'Hallway_Speaker', Message: 'It\\'s icy out today Erna – maybe a walk another day this week. I\\'ve put the heating on instead.')"
+        }
+      }
+    },
+    {
+      "id": "UC-18",
+      "title": "Energy vs comfort at night",
+      "description": "Bedroom 23°C at 11pm. Energy tariff peaks until midnight. Comfort agent wants to cool now, Energy agent wants to wait 35min, Response agent finds compromise.",
+      "payload_type": "HVAC_COMPROMISE_COMMAND",
+      "endpoint": "/api/environment/hvac/schedules",
+      "action": "PUT",
+      "body": {
+        "data": {
+          "target_zone": "Bedroom",
+          "execution_timestamp": "2026-06-09T23:35:00Z",
+          "requested_action": "Cooling_Activate",
+          "target_temperature_celsius": 19.5,
+          "compromise_delay_applied_seconds": 2100
+        }
+      },
+      "agent_orchestration": {
+        "comfort_agent": "DemandImmediateCooling(CurrentTemp: 23, UpperLimit: 22)",
+        "energy_agent": "DemandCoolingPostposition(PeakTariffWindowEnd: '00:00:00')",
+        "response_agent": {
+          "role": "Arbitrator",
+          "resolution": "ScheduleAction(TargetTime: '23:35:00', SafeMidpointTempReached: false)",
+          "silent_operation": true
+        }
+      }
+    }
+  ]
+}

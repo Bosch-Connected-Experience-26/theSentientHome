@@ -16,6 +16,8 @@
 | | | |
 | Sebastian Tiesmeyer | @sebastiantiesmeyer(https://github.com/sebastiantiesmeyer) | ML engineer |
 | | | |
+|Arpad Dusa | @dusarp (https://github.com/dusarp) | Data scientist |
+| | | |
 
 ## **Challenge**
 
